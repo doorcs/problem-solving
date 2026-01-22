@@ -1,0 +1,4 @@
+SELECT
+    COUNT(DISTINCT NAME) AS COUNT -- `DISTINCT`는 집계함수 안에서도 사용할 수 있다!!
+FROM
+    ANIMAL_INS;
