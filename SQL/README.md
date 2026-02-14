@@ -74,8 +74,21 @@ WHERE
 
 ---
 
-- 키워드는 모두 `UPPERCASE` ( `SELECT`, `MIN`, `MAX`, ... )
+- 특정 DBMS에 종속적인 문법보다 `표준 SQL 문법`을 우선적으로 고려하기 ( `IFNULL` -> `COALESCE` )
+- 키워드와 함수는 모두 `UPPERCASE`로 쓰기 ( `SELECT`, `MIN`, `MAX`, ... )
 - 테이블명과 칼럼명은 `snake_case`로 쓰려고 하되, 대문자로 주어질 경우 그대로 쓰기
 - 별칭을 적극적으로 활용하고, `AS` 키워드를 생략하지 않기
-- 문자열은 `''`(single quote)로 감싸기
-- 특정 DBMS에 종속적인 문법보다 `표준 SQL 문법`을 우선적으로 고려하기 ( `IFNULL` -> `COALESCE` )
+- Quote 컨벤션 잘 지키기
+
+  ```sql
+  -- Single Quote: 문자열, 날짜 리터럴
+  -- 비교 조건으로 사용되는 경우처럼 '값'일 땐 한글도 Single Quote로 감싸준다!
+  'DONE', '과자', '2026-01-23', ...
+
+  -- Double Quote: 특수 식별자
+  -- 이름이 키워드랑 겹치거나, 공백을 포함하거나, 특수문자를 포함하거나, 한글인 경우
+  "order", "TOTAL SALES", "average-cost", "이름", ...
+
+  -- Backtick도 특수 식별자를 감싸는 문법이긴 하지만, MySQL 전용!! ( Double Quote 쓰되, 알아만 두자 )
+  `TOTAL SALES`, `이름`, ...
+  ```
