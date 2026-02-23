@@ -1,0 +1,16 @@
+SELECT
+    BOARD_ID,
+    WRITER_ID,
+    TITLE,
+    PRICE,
+    CASE
+        WHEN STATUS = 'SALE' THEN '판매중'
+        WHEN STATUS = 'RESERVED' THEN '예약중'
+        ELSE '거래완료' -- ELSE 없이 `WHEN STATUS = 'DONE' THEN '거래완료'` 처럼 쓰는게 더 나을수도
+    END AS STATUS
+FROM
+    USED_GOODS_BOARD
+WHERE
+    CREATED_DATE = '2022-10-05'
+ORDER BY
+    BOARD_ID DESC;
