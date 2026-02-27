@@ -1,0 +1,25 @@
+WITH CTE AS (
+    SELECT
+        CAR_ID,
+        '대여중' AS AVAILABILITY
+    FROM
+        CAR_RENTAL_COMPANY_RENTAL_HISTORY
+    WHERE
+        START_DATE <= '2022-10-16'
+        AND END_DATE >= '2022-10-16'
+    GROUP BY
+        CAR_ID
+)
+
+SELECT
+    H.CAR_ID,
+    COALESCE(CTE.AVAILABILITY, '대여 가능') AS AVAILABILITY
+FROM
+    CAR_RENTAL_COMPANY_RENTAL_HISTORY AS H
+    LEFT JOIN CTE ON H.CAR_ID = CTE.CAR_ID
+GROUP BY
+    H.CAR_ID
+ORDER BY
+    H.CAR_ID DESC;
+
+-- 대여중인 자동차들에 LEFT JOIN으로 '대여중' 필드를 붙이고, 해당 필드가 비어있을 경우 대여 가능한 자동차로 표시
