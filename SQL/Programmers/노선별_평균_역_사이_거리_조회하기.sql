@@ -1,0 +1,17 @@
+SELECT
+    ROUTE,
+    CONCAT(ROUND(SUM(D_BETWEEN_DIST), 1), 'km') AS TOTAL_DISTANCE,
+    CONCAT(ROUND(AVG(D_BETWEEN_DIST), 2), 'km') AS AVERAGE_DISTANCE
+FROM
+    SUBWAY_DISTANCE
+GROUP BY
+    ROUTE
+ORDER BY
+    SUM(D_BETWEEN_DIST) DESC;
+
+-- 정렬 조건이 문자열이 되지 않도록 조심하기!!!
+--
+-- `ORDER BY`에서
+-- `CONCAT(ROUND(SUM(D_BETWEEN_DIST), 1), 'km')` 이나
+-- `TOTAL_DISTANCE(별칭)`을 쓰면
+-- 정렬 기준이 문자열이라 오답!
