@@ -5,79 +5,194 @@
 
 - `SELECT`문의 구조 및 실행 순서
 
-```sql
-SELECT
-    d.dname AS dept,
-    AVG(e.salary) AS average_salary
-    -- `AS`를 통해 테이블명, 칼럼명, 집계함수 등에 별칭(alias)을 줄 수 있다
-FROM
-    employee AS e
-    JOIN department AS d ON e.dno = d.dno
-    -- SQL에는 할당문이 없기 때문에 동등성 비교에 `==`가 아닌 `=` 사용
-WHERE
-    e.position = 'Manager'
-    -- 문자열은 single quote 로 감싸기
-    AND e.eno IS NOT NULL
-    -- null과의 비교는 `=`, `!=` 대신 `IS NULL`, `IS NOT NULL` 사용
-GROUP BY
-    d.dname
-HAVING
-    AVG(e.salary) > 7000
-    -- GROUP BY로 묶인 그룹에서 필터링 수행
-    -- `GROUP BY에 명시된 칼럼` 또는 `집계함수` 만 올 수 있다!
-ORDER BY
-    average_salary DESC,
-    d.dno ASC
-    -- 내림차순으로 정렬하려면 `DESC`, 생략 시 기본값은 `ASC`
-    -- 칼럼명이나 alias 대신 SELECT문에서 선택된 순서(1, 2, ...)를 사용할 수도 있다
-    -- ... ORDER BY 2 DESC ...
-LIMIT
-    3;
+  ```sql
+  SELECT
+      d.dname AS dept,
+      AVG(e.salary) AS average_salary
+      -- `AS`를 통해 테이블명, 칼럼명, 집계함수 등에 별칭(alias)을 줄 수 있다
+  FROM
+      employee AS e
+      JOIN department AS d ON e.dno = d.dno
+      -- SQL에는 할당문이 없기 때문에 동등성 비교에 `==`가 아닌 `=` 사용
+  WHERE
+      e.position = 'Manager'
+      -- 문자열은 single quote 로 감싸기
+      AND e.eno IS NOT NULL
+      -- null과의 비교는 `=`, `!=` 대신 `IS NULL`, `IS NOT NULL` 사용
+  GROUP BY
+      d.dname
+  HAVING
+      AVG(e.salary) > 7000
+      -- GROUP BY로 묶인 그룹에서 필터링 수행
+      -- `GROUP BY에 명시된 칼럼` 또는 `집계함수` 만 올 수 있다!
+  ORDER BY
+      average_salary DESC,
+      d.dno ASC
+      -- 내림차순으로 정렬하려면 `DESC`, 생략 시 기본값은 `ASC`
+      -- 칼럼명이나 alias 대신 SELECT문에서 선택된 순서(1, 2, ...)를 사용할 수도 있다
+      -- ... ORDER BY 2 DESC ...
+  LIMIT
+      3;
 
--------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
 
-`FROM (&& JOIN)` -> `WHERE` -> `GROUP BY` -> `HAVING` -> `SELECT` -> `ORDER BY` -> `LIMIT`
-```
+  `FROM (&& JOIN)` -> `WHERE` -> `GROUP BY` -> `HAVING` -> `SELECT` -> `ORDER BY` -> `LIMIT`
+  ```
 
 - `INSERT`문의 구조 ( `INSERT INTO` )
 
-```sql
-INSERT INTO
-    brand (category_id, brand_id, name, imalge_url)
-    -- 괄호와 칼럼명은 생략 가능하지만, 이럴 경우 테이블에 존재하는 모든 칼럼을 순서대로 적어줘야 함
-    -- INSERT INTO brand VALUES (), (), ...;
-VALUES
-    (1, 1, '버거킹', 'https://nochigima.s3.ap-northeast-2.amazonaws.com/...'),
-    (1, 2, '맥도날드', 'https://nochigima.s3.ap-northeast-2.amazonaws.com/...');
-    -- 만약 INSERT문에서 명시되지 않은 칼럼이 테이블에 존재한다면 null이 들어간다
-```
+  ```sql
+  INSERT INTO
+      brand (category_id, brand_id, name, imalge_url)
+      -- 괄호와 칼럼명은 생략 가능하지만, 이럴 경우 테이블에 존재하는 모든 칼럼을 순서대로 적어줘야 함
+      -- INSERT INTO brand VALUES (), (), ...;
+  VALUES
+      (1, 1, '버거킹', 'https://nochigima.s3.ap-northeast-2.amazonaws.com/...'),
+      (1, 2, '맥도날드', 'https://nochigima.s3.ap-northeast-2.amazonaws.com/...');
+      -- 만약 INSERT문에서 명시되지 않은 칼럼이 테이블에 존재한다면 null이 들어간다
+  ```
 
 - `UPDATE`문의 구조
 
-```sql
-UPDATE product
-SET
-    discount_value = 15,
-    start_at = '2026-01-01',
-    end_at = '2026-01-11'
-    -- 여러 칼럼을 동시에 수정해줄 수도 있다
-WHERE
-    id = 68;
-    -- !!조건을 생략할 수도!! 있다 (테이블 내 모든 레코드를 동시에 업데이트)
-```
+  ```sql
+  UPDATE product
+  SET
+      discount_value = 15,
+      start_at = '2026-01-01',
+      end_at = '2026-01-11'
+      -- 여러 칼럼을 동시에 수정해줄 수도 있다
+  WHERE
+      id = 68;
+      -- !!조건을 생략할 수도!! 있다 (테이블 내 모든 레코드를 동시에 업데이트)
+  ```
 
 - `DELETE`문의 구조 ( `DELETE FROM` )
 
-```sql
-DELETE FROM promotion
-WHERE
-    end_at >= '2025-01-01' AND end_at < '2026-01-01';
-    -- !!조건을 생략할 수도!! 있다 (테이블 스키마는 유지하되 모든 레코드를 삭제)
-```
+  ```sql
+  DELETE FROM promotion
+  WHERE
+      end_at >= '2025-01-01' AND end_at < '2026-01-01';
+      -- !!조건을 생략할 수도!! 있다 (테이블 스키마는 유지하되 모든 레코드를 삭제)
+  ```
 
 </details>
 <details>
-  <summary>기억해둬야 할 함수 (MySQL)</summary>
+  <summary>기억해둘 SQL 문법</summary>
+
+- `CASE, WHEN, THEN, ELSE, END`
+
+  ```sql
+  SELECT
+      ID,
+      CASE
+          WHEN SALES > 3000 THEN 'A' -- 줄 끝에 콤마나 세미콜론이 붙지 않는다!
+          WHEN SALES > 1500 THEN 'B'
+          ELSE 'C' -- ELSE 구문을 생략하면 평가 결과에 `NULL`이 들어갈 수 있다..!
+      END AS GRADE -- END 뒤에 AS를 넣어 `CASE문 전체에 대한 별칭` 지정 가능
+  FROM
+      ...
+  ```
+
+- `LIKE '_%'`
+
+  ```sql
+  SELECT
+      ID
+  FROM
+      EMPLOYEE
+  WHERE
+      name LIKE '%성_';
+      -- `%`는 글자 수 제한이 없는 와일드카드 ( 0개도 가능! )
+      -- `_`는 정확히 한 글자를 나타내는 와일드카드
+  ```
+
+- `IN, NOT IN`
+
+  ```sql
+  SELECT
+      ID,
+      NAME,
+      HOST_ID
+  FROM
+      PLACES
+  WHERE
+      HOST_ID IN (
+          SELECT
+              HOST_ID
+          FROM
+              PLACES
+          GROUP BY
+              HOST_ID
+          HAVING
+              COUNT(ID) > 1
+      )
+  --     HOST_ID NOT IN (3, 4, 5)
+  -- 서브쿼리를 사용할 수도 있고, 리터럴 목록을 직접 쓸 수도 있다
+  ORDER BY
+      ID ASC;
+  ```
+
+  ```sql
+  SELECT
+      FOOD_TYPE,
+      REST_ID,
+      REST_NAME,
+      FAVORITES
+  FROM
+      REST_INFO
+  WHERE
+      (FOOD_TYPE, FAVORITES) IN ( -- 여러 칼럼이 들어갈 수도 있다
+          SELECT
+              FOOD_TYPE,
+              MAX(FAVORITES)
+          FROM
+              REST_INFO
+          GROUP BY
+              FOOD_TYPE
+      )
+  ORDER BY
+      FOOD_TYPE DESC;
+  ```
+
+- `CTE` (Common Table Expression)
+
+  ```sql
+  WITH CTE AS (
+      SELECT
+          COUNT(DISTINCT USER_ID) AS CNT
+      FROM
+          USER_INFO
+      WHERE
+          YEAR(JOINED) = 2021
+  ) -- CTE 끝에는 세미콜론 안 붙는다!!
+
+  SELECT * FROM CTE;
+  ```
+
+- `RECURSIVE CTE` (재귀 CTE)
+
+  ```sql
+  WITH RECURSIVE CTE AS (
+      SELECT
+          0 AS HOUR
+
+      UNION ALL
+
+      SELECT
+          HOUR+1 AS HOUR
+      FROM
+          CTE
+      WHERE
+          HOUR < 23
+  ) -- `변수 사용`보다 `재귀 CTE 사용`이 권장되는 방식임!
+
+  SELECT HOUR FROM CTE;
+  ```
+
+</details>
+
+<details>
+  <summary>기억해둘 SQL 함수 (MySQL)</summary>
 
 ---
 
